@@ -1,0 +1,58 @@
+[
+  {
+    "id": "u2",
+    "name": "Lukas",
+    "image": "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/lukas.jpeg",
+    "status": "Hey there!"
+  },
+  {
+    "id": "u3",
+    "name": "Daniil Top",
+    "image": "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/1.jpg"
+  },
+  {
+    "id": "u4",
+    "name": "Alex",
+    "image": "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/8.png"
+  },
+  {
+    "id": "u5",
+    "name": "Vlad",
+    "image": "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/jeff.jpeg"
+  },
+  {
+    "id": "u6",
+    "name": "Elon Musk",
+    "image": "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/elon.png"
+  },
+  {
+    "id": "u7",
+    "name": "Adrian",
+    "image": "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/graham.jpg"
+  },
+  {
+    "id": "u8",
+    "name": "Borja",
+    "image": "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/zuck.jpeg"
+  },
+  {
+      "id": "u9",
+      "name": "Mom",
+      "image": "https://image.shutterstock.com/image-vector/super-mom-hero-superhero-cartoon-600w-720015928.jpg"
+  },
+  {
+    "id": "u10",
+    "name": "Andrei",
+    "image": "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/4.jpg"
+  },
+  {
+    "id": "u11",
+    "name": "Misha",
+    "image": "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/biahaze.jpg"
+  },
+  {
+    "id": "u12",
+    "name": "Alina",
+    "image": "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/7.png"
+  }
+]

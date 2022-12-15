@@ -1,7 +1,5 @@
 import { StyleSheet, Text, View, Image, Pressable } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 const ContactListItem = ({ user }) => {
-  const navigation = useNavigation();
   return (
     <Pressable
       style={styles.container}
@@ -16,7 +14,7 @@ const ContactListItem = ({ user }) => {
           <Text numberOfLines={1} style={styles.name}>
             {user.name}
           </Text>
-          <Text style={styles.subtitle}>
+          <Text numberOfLines={2} style={styles.subtitle}>
             {user.status}
           </Text>
       </View>
@@ -32,6 +30,9 @@ const styles = StyleSheet.create({
     height:70,
     alignItems:'center'
   },
+  content:{
+    flex:1
+  },
   image: {
     width: 60,
     height: 60,
@@ -43,6 +44,7 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     color: "gray",
+    width:'100%'
   },
 });
 

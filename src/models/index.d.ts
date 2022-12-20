@@ -12,8 +12,10 @@ type EagerChatRoom = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
+  readonly name?: string | null;
+  readonly image?: string | null;
   readonly Messages?: (Message | null)[] | null;
-  readonly Users?: (ChatRoomUser | null)[] | null;
+  readonly Users?: ChatRoomUser[] | null;
   readonly LastMessage?: Message | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
@@ -26,6 +28,8 @@ type LazyChatRoom = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
+  readonly name?: string | null;
+  readonly image?: string | null;
   readonly Messages: AsyncCollection<Message>;
   readonly Users: AsyncCollection<ChatRoomUser>;
   readonly LastMessage: AsyncItem<Message | undefined>;
@@ -43,26 +47,26 @@ export declare const ChatRoom: (new (init: ModelInit<ChatRoom>) => ChatRoom) & {
 type EagerMessage = {
   readonly [__modelMeta__]: {
     identifier: ManagedIdentifier<Message, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
+    readOnlyFields: 'updatedAt';
   };
   readonly id: string;
+  readonly createdAt: string;
   readonly text: string;
   readonly chatroomID: string;
   readonly userID: string;
-  readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
 
 type LazyMessage = {
   readonly [__modelMeta__]: {
     identifier: ManagedIdentifier<Message, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
+    readOnlyFields: 'updatedAt';
   };
   readonly id: string;
+  readonly createdAt: string;
   readonly text: string;
   readonly chatroomID: string;
   readonly userID: string;
-  readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
 

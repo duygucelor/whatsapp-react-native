@@ -5,6 +5,7 @@ import { Auth, API, graphqlOperation } from "aws-amplify";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { onUpdateChatRoom } from "../graphql/subscriptions";
+import { FontAwesome } from "@expo/vector-icons";
 
 dayjs.extend(relativeTime);
 
@@ -12,14 +13,16 @@ const ChatListItem = ({ chat }) => {
   const navigation = useNavigation();
   const [user, setUser] = useState(null);
   const [chatRoom, setChatRoom] = useState(chat);
+  const fetchData = async () => {
+    const currentUser = await Auth.currentAuthenticatedUser();
+    const userToChat = chatRoom.Users.items.filter(
+      (item) => item.user.id !== currentUser?.attributes.sub
+    );
+    if (userToChat.length === 1) {
+      setUser(userToChat[0].user);
+    }
+  };
   useEffect(() => {
-    const fetchData = async () => {
-      const currentUser = await Auth.currentAuthenticatedUser();
-      const userToChat = chatRoom.Users.items.filter(
-        (item) => item.user.id !== currentUser?.attributes.sub
-      )[0].user;
-      setUser(userToChat);
-    };
     fetchData();
   }, []);
 
@@ -37,27 +40,35 @@ const ChatListItem = ({ chat }) => {
       },
       error: (err) => console.warn(err),
     });
-
     return () => subscription1.unsubscribe();
-  }, [chat.id]);
+  }, []);
 
   return (
     <Pressable
       onPress={() =>
-        navigation.navigate("Chat", { id: chatRoom.id, name: user?.name })
+        navigation.navigate("Chat", {
+          id: chatRoom.id,
+          name: chatRoom?.name || user?.name,
+        })
       }
       style={styles.container}
     >
-      <Image
-        style={styles.image}
-        source={{
-          uri: user?.image,
-        }}
-      ></Image>
+      {chatRoom?.image || user?.image ? (
+        <Image
+          style={styles.image}
+          source={{
+            uri: chatRoom?.image || user?.image,
+          }}
+        />
+      ) : (
+        <View style={styles.image}>
+          <FontAwesome name="user-circle" size={60} color="black" />
+        </View>
+      )}
       <View style={styles.content}>
         <View style={styles.row}>
           <Text numberOfLines={1} style={styles.name}>
-            {user?.name}
+            {chatRoom?.name || user?.name}
           </Text>
           {chatRoom.LastMessage && (
             <Text style={styles.subtitle}>
@@ -84,6 +95,7 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 30,
+    borderColor: "black",
     marginRight: 10,
   },
   content: {

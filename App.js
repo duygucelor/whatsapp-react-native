@@ -10,6 +10,7 @@ import { createUser } from "./src/graphql/mutations";
 Amplify.configure({ ...awsconfig, Analytics: { disabled: true } });
 
 const App = () => {
+  
   useEffect(() => {
     const syncUser = async () => {
       const currentUser = await Auth.currentAuthenticatedUser({

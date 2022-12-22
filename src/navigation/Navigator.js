@@ -6,6 +6,8 @@ import ContactsScreen from "../screens/ContactsScreen";
 import SettingsScreen from "../screens/SettingsScreen";
 import NewGroupScreen from "../screens/NewGroupScreen";
 import MainTabNavigator from "./MainTabNavigator";
+import GroupInfoScreen from "../screens/GroupInfoScreen";
+import AddContactsToGroupScreen from "../screens/AddContactsToGroupScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -25,6 +27,11 @@ const Navigator = () => {
         <Stack.Screen name="Contacts" component={ContactsScreen} />
         <Stack.Screen name="Settings" component={SettingsScreen} />
         <Stack.Screen name="NewGroup" component={NewGroupScreen} />
+        <Stack.Screen name="GroupInfo" component={GroupInfoScreen} />
+        <Stack.Screen
+          name="Add Contacts"
+          component={AddContactsToGroupScreen}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

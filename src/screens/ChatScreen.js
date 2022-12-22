@@ -13,6 +13,7 @@ import InputBox from "../components/InputBox.js";
 import { API, graphqlOperation } from "aws-amplify";
 import { getChatRoom, listMessagesByChatRoom } from "../graphql/queries";
 import { onCreateMessage, onUpdateChatRoom } from "../graphql/subscriptions";
+import { Feather } from "@expo/vector-icons";
 
 const ChatScreen = () => {
   const [chatRoom, setChatRoom] = useState(null);
@@ -20,6 +21,7 @@ const ChatScreen = () => {
   const route = useRoute();
   const navigation = useNavigation();
   const chatRoomID = route.params.id;
+
 
   const fetchChatRoomData = async () => {
     const result = await API.graphql(
@@ -43,7 +45,6 @@ const ChatScreen = () => {
       },
       error: (err) => console.warn(err),
     });
-
     return () => subscription1.unsubscribe();
   }, [chatRoomID]);
 
@@ -71,10 +72,20 @@ const ChatScreen = () => {
       return () => subscription.unsubscribe();
     };
     getChatRoomMessages();
-  }, []);
+  }, [chatRoomID]);
 
   useEffect(() => {
-    navigation.setOptions({ title: route.params.name });
+    navigation.setOptions({
+      title: route.params.name,
+      headerRight: () => (
+        <Feather
+          onPress={() => navigation.navigate("GroupInfo", { id: chatRoomID })}
+          name="more-vertical"
+          size={24}
+          color="gray"
+        />
+      ),
+    });
   }, [route.params.name, chatRoomID]);
 
   if (!chatRoom) {
@@ -83,9 +94,9 @@ const ChatScreen = () => {
 
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      // behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={styles.bg}
-      keyboardVerticalOffset={Platform.OS === "ios" ? 60 : 90}
+      // keyboardVerticalOffset={Platform.OS === "ios" ? 60 : 90}
     >
       <ImageBackground source={bg} style={styles.bg}>
         <FlatList

@@ -8,18 +8,24 @@ const ContactListItem = ({
 }) => {
   return (
     <Pressable style={styles.container} onPress={onPress}>
-      <Image
-        style={styles.image}
-        source={{
-          uri: user.image,
-        }}
-      ></Image>
+      {user?.image ? (
+        <Image
+          style={styles.image}
+          source={{
+            uri: user?.image,
+          }}
+        />
+      ) : (
+        <View style={styles.image}>
+          <FontAwesome name="user-circle" size={60} color="black" />
+        </View>
+      )}
       <View style={styles.content}>
         <Text numberOfLines={1} style={styles.name}>
-          {user.name}
+          {user?.name}
         </Text>
         <Text numberOfLines={2} style={styles.subtitle}>
-          {user.status}
+          {user?.status}
         </Text>
       </View>
       {selectable &&

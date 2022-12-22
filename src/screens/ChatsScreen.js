@@ -14,15 +14,19 @@ const ChatsScreen = () => {
       const response = await API.graphql(
         graphqlOperation(listUserChatRooms, { id: currentUser.attributes.sub })
       );
-      const rooms = response?.data?.getUser?.chatrooms?.items || [];
+      const rooms =
+        response?.data?.getUser?.chatrooms?.items.filter(
+          (item) => !item._deleted
+        ) || [];
       const sortedRooms = rooms.sort(
         (room1, room2) =>
-          new Date(room2.chatRoom.updatedAt) - new Date(room1.chatRoom.updatedAt)
+          new Date(room2.chatRoom.updatedAt) -
+          new Date(room1.chatRoom.updatedAt)
       );
       setChatRooms(sortedRooms);
       setLoading(false);
     } catch (error) {
-      console.info(error)
+      console.info(error);
       setLoading(false);
     }
   };

@@ -22,7 +22,7 @@ const ChatScreen = () => {
   const navigation = useNavigation();
   const chatRoomID = route.params.id;
 
-
+  console.info(messages);
   const fetchChatRoomData = async () => {
     const result = await API.graphql(
       graphqlOperation(getChatRoom, { id: chatRoomID })

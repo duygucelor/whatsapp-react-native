@@ -1,12 +1,16 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, useWindowDimensions } from "react-native";
 import { useEffect, useState } from "react";
-import { Auth } from "aws-amplify";
+import { Auth, Storage } from "aws-amplify";
+import ImageAttachments from "./ImageAttachments";
+import VideoAttachments from "./VideoAttachments";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 dayjs.extend(relativeTime);
 
 const Message = ({ message }) => {
   const [isMe, setIsMe] = useState(false);
+  const [downloadedAttachments, setDownloadedAttachments] = useState([]);
+  const { width } = useWindowDimensions();
   useEffect(() => {
     const isMyMessage = async () => {
       const currentUser = await Auth.currentAuthenticatedUser();
@@ -14,6 +18,33 @@ const Message = ({ message }) => {
     };
     isMyMessage();
   }, []);
+
+  useEffect(() => {
+    const downloadAttachments = async () => {
+      if (message.Attachments.items) {
+        const attachments = await Promise.all(
+          message.Attachments.items.map((attachment) =>
+            Storage.get(attachment.storageKey).then((uri) => ({
+              ...attachment,
+              uri,
+            }))
+          )
+        );
+        setDownloadedAttachments(attachments);
+      }
+    };
+    downloadAttachments();
+  }, [JSON.stringify(message.Attachments.items)]);
+
+  const imageContainerWidth = width * 0.8 - 30;
+
+  const imageAttachments = downloadedAttachments.filter(
+    (at) => at.type === "IMAGE"
+  );
+  const videoAttachments = downloadedAttachments.filter(
+    (at) => at.type === "VIDEO"
+  );
+
   return (
     <View
       style={[
@@ -24,6 +55,15 @@ const Message = ({ message }) => {
         },
       ]}
     >
+      {downloadedAttachments.length > 0 && (
+        <View style={[{ width: imageContainerWidth }, styles.images]}>
+          <ImageAttachments attachments={imageAttachments} />
+          <VideoAttachments
+            attachments={videoAttachments}
+            width={imageContainerWidth}
+          />
+        </View>
+      )}
       <Text>{message?.text}</Text>
       <Text style={styles.time}>{dayjs(message?.createdAt).fromNow(true)}</Text>
     </View>
@@ -32,12 +72,12 @@ const Message = ({ message }) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "white",
-    alignSelf: "flex-start",
     margin: 5,
     padding: 10,
     borderRadius: 10,
     maxWidth: "80%",
+
+    // Shadows
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -45,11 +85,27 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.18,
     shadowRadius: 1.0,
+
     elevation: 1,
   },
   time: {
     color: "gray",
     alignSelf: "flex-end",
+  },
+  images: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+  },
+  imageContainer: {
+    width: "50%",
+    aspectRatio: 1,
+    padding: 3,
+  },
+  image: {
+    flex: 1,
+    borderColor: "white",
+    borderWidth: 1,
+    borderRadius: 5,
   },
 });
 
